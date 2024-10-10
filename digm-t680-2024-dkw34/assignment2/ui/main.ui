@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>696</width>
+    <height>433</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <item>
+    <widget class="QLabel" name="title">
+     <property name="text">
+      <string>Maya Cube Creator</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="cubeDimensions">
+     <property name="text">
+      <string>Cube Dimensions</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="widthLabel">
+     <property name="text">
+      <string>Width</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="widthSpinBox"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="heightLabel">
+     <property name="text">
+      <string>Height</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="heightSpinBox"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="depthLabel">
+     <property name="text">
+      <string>Depth</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDoubleSpinBox" name="depthSpinBox"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_2">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="materialSelection">
+     <property name="text">
+      <string>Material Selection</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="materialComboBox"/>
+   </item>
+   <item>
+    <widget class="Line" name="line_3">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="colorSelection">
+     <property name="text">
+      <string>Color Selection</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="colorButton">
+     <property name="text">
+      <string>Open Color Picker</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="Line" name="line_4">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="createCubeButton">
+     <property name="text">
+      <string>Create Cube</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
