@@ -14,7 +14,7 @@ This tool allows you to create cubes with custom dimensions, materials, and colo
    │   └── assignment2.py
    └── ui/
        └── main.ui
-     ```txt
+     ```
 
 3. Add the parent directory of `assignment2` to Maya's Python path. You can do this in one of two ways:
 
