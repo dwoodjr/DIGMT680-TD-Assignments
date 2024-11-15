@@ -6,7 +6,7 @@ Copy the below code into Maya Script editor (Python)
     importlib.reload(assignment5)
     assignment5.show_cube_creator()
 """
-# ----------------------------------Maya Cube Creator------------------------------------
+# ----------------------------------Maya Cube Creator (Version 2.0.0)------------------------------------
 
 import os
 import maya.cmds as cmds
