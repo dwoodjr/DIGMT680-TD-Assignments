@@ -23,7 +23,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         if not Form.objectName():
             Form.setObjectName(u"Form")
-        Form.resize(696, 433)
+        Form.resize(696, 496)
         self.verticalLayout_2 = QVBoxLayout(Form)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.title = QLabel(Form)
@@ -119,6 +119,11 @@ class Ui_Form(object):
 
         self.verticalLayout_2.addWidget(self.createCubeButton)
 
+        self.exportDataButton = QPushButton(Form)
+        self.exportDataButton.setObjectName(u"exportDataButton")
+
+        self.verticalLayout_2.addWidget(self.exportDataButton)
+
 
         self.retranslateUi(Form)
 
@@ -136,5 +141,6 @@ class Ui_Form(object):
         self.colorSelection.setText(QCoreApplication.translate("Form", u"Color Selection", None))
         self.colorButton.setText(QCoreApplication.translate("Form", u"Open Color Picker", None))
         self.createCubeButton.setText(QCoreApplication.translate("Form", u"Create Cube", None))
+        self.exportDataButton.setText(QCoreApplication.translate("Form", u"Export Session Data", None))
     # retranslateUi
 

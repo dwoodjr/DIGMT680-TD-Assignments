@@ -15,6 +15,20 @@ from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtUiTools import QUiLoader
 from shiboken6 import wrapInstance
 import logging
+import json
+from datetime import datetime
+import getpass
+import maya.mel as mel
+
+class MayaHandler(logging.Handler):
+    def emit(self, record):
+        msg = self.format(record)
+        if record.levelno >= logging.ERROR:
+            cmds.error(msg)
+        elif record.levelno >= logging.WARNING:
+            cmds.warning(msg)
+        else:
+            print(msg)
 
 def setup_logger():
     logger = logging.getLogger('CubeCreator')
@@ -23,23 +37,24 @@ def setup_logger():
     # Clear any existing handlers
     logger.handlers = []
     
-    # Create formatter
-    formatter = logging.Formatter('%(levelname)s: %(message)s')  # Simplified format for Maya Script Editor
+    # Create formatters
+    console_formatter = logging.Formatter('%(levelname)s: %(message)s')
+    file_formatter = logging.Formatter('%(asctime)s - %(levelname)s: %(message)s')
     
-    # Maya Script Editor handler using cmds.inViewMessage
-    class MayaHandler(logging.Handler):
-        def emit(self, record):
-            msg = self.format(record)
-            if record.levelno >= logging.ERROR:
-                cmds.error(msg)
-            elif record.levelno >= logging.WARNING:
-                cmds.warning(msg)
-            else:
-                print(msg)  # For INFO and DEBUG messages
-    
+    # Maya Script Editor handler
     maya_handler = MayaHandler()
-    maya_handler.setFormatter(formatter)
+    maya_handler.setFormatter(console_formatter)
     logger.addHandler(maya_handler)
+    
+    # File handler
+    project_path = cmds.workspace(q=True, rd=True)
+    log_dir = os.path.join(project_path, 'cube_creator_logs')
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    
+    file_handler = logging.FileHandler(os.path.join(log_dir, 'cube_creator.log'))
+    file_handler.setFormatter(file_formatter)
+    logger.addHandler(file_handler)
     
     return logger
 
@@ -78,6 +93,16 @@ class CubeCreator(QtWidgets.QDialog):
         self.ui.createCubeButton.clicked.connect(self.create_cube)
         self.ui.colorButton.clicked.connect(self.select_color)
         self.ui.materialComboBox.addItems(["Lambert", "Blinn", "Phong"])
+        self.ui.exportDataButton.clicked.connect(self.export_session_data)
+        
+        # Initialize metadata storage
+        self.session_metadata = {
+            'created_objects': [],
+            'session_date': datetime.now().strftime('%Y-%m-%d'),
+            'username': getpass.getuser(),
+            'maya_version': cmds.about(version=True),
+            'project_path': cmds.workspace(q=True, rd=True)
+        }
 
     # Function for creating the cube and connecting cmds with main.ui
     def create_cube(self):
@@ -103,6 +128,27 @@ class CubeCreator(QtWidgets.QDialog):
             else:
                 logger.warning("No color selected, using default material color")
                 
+            # Store metadata for this cube
+            cube_metadata = {
+                'name': cube,
+                'dimensions': {
+                    'width': width,
+                    'height': height,
+                    'depth': depth
+                },
+                'material': material_type
+            }
+            
+            if color:
+                cube_metadata['color'] = {
+                    'r': color.redF(),
+                    'g': color.greenF(),
+                    'b': color.blueF()
+                }
+                
+            self.session_metadata['created_objects'].append(cube_metadata)
+            logger.info(f"Added metadata for cube: {cube}")
+            
         except Exception as e:
             logger.error(f"Error creating cube: {str(e)}")
             raise
@@ -117,6 +163,48 @@ class CubeCreator(QtWidgets.QDialog):
             self.ui.colorButton.setProperty("selectedColor", color)
         else:
             logger.warning("Color selection cancelled")
+
+    def export_session_data(self):
+        try:
+            # Update final session metadata
+            self.session_metadata['total_objects'] = len(self.session_metadata['created_objects'])
+            
+            # Get Maya's project directory
+            project_path = cmds.workspace(q=True, rd=True)
+            export_dir = os.path.join(project_path, 'cube_creator_exports')
+            
+            # Create export directory if it doesn't exist
+            if not os.path.exists(export_dir):
+                os.makedirs(export_dir)
+            
+            # Generate filename with date
+            date_stamp = datetime.now().strftime('%Y%m%d')
+            export_path = os.path.join(export_dir, f'cube_creator_session_{date_stamp}.txt')
+            
+            with open(export_path, 'w') as f:
+                # Write log header
+                f.write("=== CUBE CREATOR SESSION LOG ===\n\n")
+                
+                # Write metadata
+                f.write("--- SESSION METADATA ---\n")
+                f.write(json.dumps(self.session_metadata, indent=2))
+                f.write("\n\n")
+                
+                # Write logger contents
+                f.write("--- OPERATION LOG ---\n")
+                for handler in logger.handlers:
+                    if isinstance(handler, logging.FileHandler):
+                        with open(handler.baseFilename, 'r') as log_file:
+                            f.write(log_file.read())
+            
+            logger.info(f"Session data exported to: {export_path}")
+            cmds.confirmDialog(title='Export Complete', 
+                             message=f'Session data exported to:\n{export_path}', 
+                             button=['OK'])
+            
+        except Exception as e:
+            logger.error(f"Error exporting session data: {str(e)}")
+            cmds.warning(f"Failed to export session data: {str(e)}")
 
 # Function to show the UI Qt Widget
 def show_cube_creator():

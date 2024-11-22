@@ -9,6 +9,11 @@ A Python-based tool for Maya 2025 that provides a user-friendly interface for cr
 - Custom color selection through a color picker
 - Real-time feedback through logging
 - Maya-integrated UI using PySide6
+- Session metadata tracking and export functionality:
+  - Exports creation data to text files
+  - Records user, date, and Maya version
+  - Tracks all cubes created with their properties
+  - Maintains detailed operation logs
 
 ## Requirements
 
@@ -80,6 +85,24 @@ assignment5.show_cube_creator()
    - Choose your desired color
 5. **Create Cube**:
    - Click "Create Cube" to generate your customized cube in the scene
+6. **Export Session Data**:
+   - Click "Export Session Data" to save creation metadata and logs
+   - Files are saved to `cube_creator_exports` in your Maya project directory
+   - Exports include session info, cube properties, and operation logs
+
+## Export Data Structure
+
+The tool creates two directories in your Maya project folder:
+
+- `cube_creator_exports/`: Contains session metadata and logs
+- `cube_creator_logs/`: Contains detailed operation logs
+
+Export files include:
+
+- Session date and user information
+- Maya version and project path
+- Details of all created cubes (dimensions, materials, colors)
+- Complete operation log history
 
 ## Troubleshooting
 
@@ -126,7 +149,8 @@ This project is licensed under the MIT License
 
 ## Version History
 
-- 2.0.0: Initial release
+- 3.1.1: Initial release
   - Basic cube creation
   - Material and color support
   - Logging implementation
+  - Metadata Session Export
