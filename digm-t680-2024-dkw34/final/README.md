@@ -56,7 +56,7 @@ udpPort.open();
 
 ### 2. Houdini Asset Pipeline
 
-Houdini was used to process and convert the Perelstein Gallery space geometry from Sketchfab to FBX. A digital representation of the tapestry was created with custom geometry attributes to automatically generate Unity materials. The asset was imported into Unity as an HDA via the Houdini Engine for Unity.
+Houdini was used to process and convert the Pearlstein Gallery space geometry from Sketchfab to FBX. A digital representation of the tapestry was created with custom geometry attributes to automatically generate Unity materials. The asset was imported into Unity as an HDA via the Houdini Engine for Unity.
 
 #### Example Attribute Configuration (Houdini)
 
